@@ -38,3 +38,4 @@ print r'c:\nowhere'
 print r'This is illlegal \' #最后一个字符不能够是反斜杠
 #unicode字符串
 u'HELLO,WORLD'
+
