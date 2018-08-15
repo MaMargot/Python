@@ -70,7 +70,8 @@ del names[2]#采用del语句删除元素
 name=list('Perl')
 name[2:]=list('ar')
 name[2:]=list('ython')#可以使用不等长赋值
-
+name[1:1]=list('a')#在不替换元素下插入新元素
+name[2:3]=[]#通过分片赋值来删除元素
 
 
 
