@@ -38,3 +38,42 @@ print r'c:\nowhere'
 print r'This is illlegal \' #最后一个字符不能够是反斜杠
 #unicode字符串
 u'HELLO,WORLD'
+#列表与元组的区别在于：列表可以修改，而元组不可以修改
+edward=['Edward Gumby',42]#列表
+(a.b)#元组
+john=['John smith',32]
+database=[edward,john]
+database
+greeting='Hello'
+greeting[0]#序列的索引从0开始，使用负数时从右边开始
+number=[1,2,3,4,5,6,7]
+number[0:1]#第一个索引元素包含在分片内，第二个元素不包含在分片内
+number[-3:0]#报错，实际上分片最左边的索引比它右边的晚出现在序列，会出现空序列
+number[-3:]#只需空置最后一个索引即可
+number[::1]#设置步长
+number[7:3:-1]#步长可以为负数，即从右边往左边取
+number[0:10:-2]#空序列
+[1,2,3]+[4,5,6]
+[1,2,3]+'world'#同类型的序列才能相加
+'python'*7
+[42]*7
+[None]*10 #意味着产生了一个没有在里面放置元素的序列
+permission='ws'
+'x' in permission
+users=['mhl','foo','bar']
+raw_input("What your name:") in users
+list('Hello')#列表
+' '.join('hello')
+x[1]=2#列表复制
+names=['Alice','Beth','Cecil','Dee-Dee','Earl']
+del names[2]#采用del语句删除元素
+name=list('Perl')
+name[2:]=list('ar')
+name[2:]=list('ython')#可以使用不等长赋值
+
+
+
+
+
+
+
