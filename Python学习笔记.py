@@ -109,5 +109,47 @@ x.sort(reverse=True)
 tuple()#将参数转换为元组
 x[1]#元素
 x[0:2]#元组
+website='http://www.python.org'
+website[-3:]='com'#字符串的都是不可变的
+format='Hello,%s.%s enough for ya?'
+value=('world','Hot')#一般情况下用元组,只有元组和字典可以格式化一个以上的值，如果格式化字符串中有百分号，则必须用%%
+print format%value
+format='pi with three decimals : %.3f'
+from string import Template
+s=Template('$x , glorious %x !')
+s.substitute(x='slurm') #模板字符串
+s=Template('It\'s  ${x}tastic')#替换单词的一部分
+s=Template('Make $$ selling $x')#使用美元符号
+s=Tempalte('A $thing must never $action')
+d={}
+d['thing']='gentlman'
+d['action']='show his socks'
+s.substitute(d) #可以使用字典的值/名称对
+'%s plus %s equals %s'%(1,2,3)# 必须用圆括号括起
+'price of egg : $%d'% 2 #表示正数需在前面加上空格
+'%.5s'%'Gido van rossum' #若是字符串则决定字符串的最大字符串长度
+'%10.2f'%pi #+向右对齐，-向左对齐
+'%010.2f'%pi #用0填充
+print('% 5d'% 10)+'\n'+('% 5d'% -10)
+'With a moo-moo here. and a moo-moo there '.find('moo')#返回子串所在位置的最左端索引，没有找到则返回-1
+subject='$$$ Get rich now !!! $$$'
+subject,find('$$$')#in操作符只能查询单个字符
+subject.find('!!!',0,16)#提供起始位和结束位
+seq=[1,2,3,4]
+sep='+'
+sep.join(seq)#报错，不能连接数字列表
+seq.split(sep)#分割
+'Using the default'.split()#不提供分割符时，把所有空格当分隔符
+'Trondheim'.lower()#小写
+'that\'s all folks'.title()#开头大写
+'This is a test'.replace('is','eez')#替换
+'   Inter whitespace    '.strip()#提出头尾的空格
+'* Inter ** fro **!!!'.strip(' *!')#可提供参数剔除
+from string import maketrans
+table =maketrans('cs','kz')#在使用translate之前要先完成转换表
+'This is an icredible test '.translate(table,' ')#translate每次能替换多个单字符，仅能替换单字符，第二个参数是用于删除需要删除的字符
+
+
+
 
 
