@@ -148,6 +148,19 @@ seq.split(sep)#分割
 from string import maketrans
 table =maketrans('cs','kz')#在使用translate之前要先完成转换表
 'This is an icredible test '.translate(table,' ')#translate每次能替换多个单字符，仅能替换单字符，第二个参数是用于删除需要删除的字符
+phonebook={'Alice':'2341','Beth':'9012','Cecil':'32580'}#创建字典
+items=[('name','Gumby'),('age',32)]#dict-列表内的元组键值对应
+d=dict(items)
+d['name']
+
+
+
+
+
+
+
+
+
 
 
 
