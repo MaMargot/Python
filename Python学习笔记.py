@@ -93,7 +93,7 @@ number[3:3]='four'#亦可以实现
 x.pop()#移除列表中的一个元素，（指定位置-索引）,采用类似于栈的做法
 x.remove('be')#移除列表中的某个值的第一个匹配项,没有返回值
 x.reverse()#将列表元素方向存放
-reverse(x)
+x=reverse(x)
 list(x)#同样可以实现，但reverse返回的是一个迭代对象，而非一个列表
 x.sort()#对列表进行排序，改变原来的列表
 y=x.sort()#并不能返回一个排序后的列表，返回的是NONE
@@ -152,11 +152,59 @@ phonebook={'Alice':'2341','Beth':'9012','Cecil':'32580'}#创建字典
 items=[('name','Gumby'),('age',32)]#dict-列表内的元组键值对应
 d=dict(items)
 d['name']
-
-
-
-
-
+x=[] #键可以为任何不可变类型
+x[42]='foolar'
+x={}
+x[42]='foolar'#键具有自动添加功能,可以有子健
+people={'Alice':{
+    'phone':'2341'
+    ,'adress':'foo drive 23'},
+    'Beth':{
+        'phone':'9102'
+        ,'address':'bar street 42'
+    }
+}
+phonebook={'Beth':'9210',
+           'Alice':'2314',
+           'Ceil':'2358'}
+"Cecil's phone number is %(Ceil)s"%phonebook #格式化字符串，此处键的格式化用元组表示
+return_value=d.clear()#clear方法清除字典中的所有项，且无返回值
+#下面注意
+x={}
+y=x
+x['key']='value'
+x={}
+y#在将x关联到一个空字典上时，y不会改变
+x.clear()
+y#如果想要清除原字典所有元素时，必须用clear方法
+x={'usrname':'admin','machines':['foo','bar','baz']}
+y=x.copy()#浅复制
+y['usrname']='mlh'
+y['machines'].remove('baz')
+y#在副本中替换值时，原始字典不受影响
+x#在副本中修改某个值时，原字典也会改变
+from copy import deepcopy
+d={}
+d['name']=['Alfred','bertand']
+c=d.copy()
+dc=deepcopy(d)#深复制，复制其包含的所有值，且不受更改的影响
+d['name'].append('Clive')
+c
+dc
+#
+{}.fromleys(['name','age'],'(unknown)')#使用给定键建立新的字典，每个键的默认值为None,可自己设置
+print d.get('named')#试图访问字典中不存在的项时不会报错
+d.get('name','N/A')#使用get访问一个不存在的键时，会返回None,可设置默认值替换None
+d.items()#将字典以列表形式返回
+d.iteritems()#返回列表的迭代器
+list(d.iteritems())#返回列表
+d.pop('x')#获得对应键的值，并将键对从字典中剔除
+d.popitem()#弹出随即项
+d={}
+d['name']='Gumby'
+d.setdefault('name','N/A')#可以在字典中不含有定键的情况下设定相应的键值
+d.update(x)#可以用一个字典更新另一个字典
+d.values()#以列表的形式返回字典中的值（itervalues返回迭代器），返回列表中可以包含重复元素
 
 
 
