@@ -205,9 +205,96 @@ d['name']='Gumby'
 d.setdefault('name','N/A')#可以在字典中不含有定键的情况下设定相应的键值
 d.update(x)#可以用一个字典更新另一个字典
 d.values()#以列表的形式返回字典中的值（itervalues返回迭代器），返回列表中可以包含重复元素
-
-
-
+print 'age:',42
+print 1,2,3
+print (1,2,3)
+print greeting,',',saluation,name #逗号前会加空格
+print greeting+',',saluation,name
+from somemodule import somefunction,anotherfunction,yetanotherfunction
+from somemodule import *
+module1.open()
+module2.open()#多个模块同时含有相同函数的处理方法
+import math as foobar#提供模块别名
+foobar.sqrt(4)
+from math import sqrt as foobar#提供函数别名
+foobar(4)
+x,y,z = 1,2,3#序列解包
+print x,y,z
+x,y=y,x
+values=1,2,3
+x,y,z=values
+scoundrel={'name':robin,'girlfriend':'marion'}
+key,value=scoundrel.popitem()
+x=y=somefunction()#链式赋值，不等价于x=function,y=x
+x+=2#增量赋值
+x*=2
+x+='foor'
+False ,None,"",[],{},()#均被默认为false
+bool("")
+num=input('Enter a number:')
+if num>0:#循环语句
+    print 'The number is positive'
+elif num<0:
+    print 'The number is negative'
+else :
+    print 'The number is zero'
+x=y=[1,2,3]
+z=[1,2,3]
+x==y#相等性运算符
+x==z
+x is y
+x is z#同一性运算符is
+'alpha'<'beta'
+age=-1
+assert 0<age<100 #断言
+assert 0<age<100,'The age must be realistic'
+name=''
+while not name.strip():
+    name=raw_input('Please Enter your name: ')
+print 'Hello,%s'%name
+words=['this','is','an','ex','parrot']
+for word in words:
+    print word
+for num in range(0,101):#xrange()可以一次创建一个数
+    print number
+for key,value in d.items():
+    print key,'corresponds to ',value
+names=['anne','beth','george','damn']
+ages=[12,45,32,102]
+zip(names,ages)#压缩两个序列
+for name,age in zip(names,ages):
+    print name ,'is',age,'years old'
+zip(range(5),xrange(1000000))#对付不等长的序列时，当最短的序列'用完'就会停止
+for index,string in enumerate(strings):#在提供索引的地方迭代索引-值对
+    if 'xxx' in string:
+        strings[index]='[censored]'
+list(reversed('Hello,World'))#reversed返回的是迭代对象
+from math import sqrt
+for n in range(99,81,-1):
+    root=sqrt(n)
+    if root == int(root):
+        print n
+        break
+else:#使用在循环语句中的else
+    print "Didn't find it "
+[x*x for x in range(10)] #列表推导式，轻量循环
+[x*x for x in range(10) if x%3==0]
+[(x,y) for x in range(3) for y in range(3)]
+scoundrel={'age':42,'frist name':'robin','last name ':'of locksley'}
+robin=scoundrel
+scoundrel=None
+robin=None#此时python删除该字典
+x=1
+del x#不仅移除一个对象的引用，也会移出那个名字的本身
+exec "print 'Hello,World!'"#exec执行字符串
+from math import sqrt
+scope={}#放置代码字符创命名空间
+exec "sqrt=1" in scope
+sqrt(4)
+scope[sqrt]
+len(scope)
+scope.keys()#内建函数和值
+eval(raw_input("Enter an arithmetic expression:"))#计算以字符串形式书写的表达式
 
 
 
