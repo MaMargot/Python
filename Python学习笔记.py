@@ -295,9 +295,84 @@ scope[sqrt]
 len(scope)
 scope.keys()#内建函数和值
 eval(raw_input("Enter an arithmetic expression:"))#计算以字符串形式书写的表达式
-
-
-
-
-
-
+import math
+y=math.sqrt
+callable(y)#用来检查调用函数是否可用
+def hello(name):
+    print 'hello '+name
+    return 'hello'+name
+hello('peter')
+def square(x):
+    'Calculates the square of the number x'#文档字符串
+    return x*x
+square.__doc__
+help(square)
+def change(n):
+    n[0]='Mr.Gumby'
+names=['Mr.Entity','Mrs.Thing']
+change(names)
+names#字符串和元组无法被改变，只能用新值覆盖，而可变数据结构，若是替换部分值，则会改变，可参考copy
+n=names[:]#切片总是副本
+n is names
+n==names
+storage={}#改变数据结构
+my_sisiter='Anne Lie Hetland'
+storage['frist'].setfault('Anne',[]).append(my_sisiter)
+storage['second'].setfault('Lie',[]).append(my_sisiter)
+storage['last'].setfault('Hetland',[]).append(my_sisiter)
+def init(data):
+    data['first']={}
+    data['second']={}
+    data['last']={}
+def lookup(data,label,name):
+    return data[label].get(name)
+def store(data,full_name):
+    names=full_name.split()
+    if len(name)==2: names.insert(1,' ')
+    labels='first','middle','last'
+    for label,name in zip(lables,names):
+        people = lookup(data,label,name)
+        if people:
+            people.append(full_name)#!!!利用了可变数据结构的性质
+        else :
+            data[label][name]=[full_name]
+def inc(x): return x+1
+foo=10
+foo=inc(foo)#若想返回多个值，用元组的形式返回
+foo=[10]
+inc(foo)#此处同样用了可变数据类型的性质
+def hello_world1(greeting,name):
+    print '%s,%s'%(greeting,name)
+hello_world1(greeting='hello',name='world')#关键字参数
+def hello_world2(greeting='HELLO',name='WORLD'):#提供默认值
+    print '%s,%s'%(greeting,name)
+def print_params(title,*params):#收集其余的位置参数，返回元组
+    print title
+    print params
+print_params('titile:',(1.2,3))
+print_params('title')
+print_params('humm',somthing=2)#不能处理关键字参数
+def print_params1(x,y,z=3,*pospar,**keypar):#另外一个收集位置参数，返回字典
+    print x,y,z
+    print pospar
+    print keypar
+def add(x,y): return x+y
+params=(1,2)
+add(*params)#反转过程
+params={'name':'sir robin','greeting':'Well met'}
+hello_world2(**params)
+x=1
+scope=vars()#一般来说，vars()返回的字典是不能修改的
+scope['x']
+scope['x']+=1#
+x
+def combine(parameter):print parameter+external
+external='berry'
+combine('shurb')#函数内读取全局变量
+def combine(parameter):print parameter+globals()['parameter']#正确调用全局变量的方法，相应地局部为locals
+parameter='berry'
+combine('shrub')
+x=1
+def change_global():
+    global x #重绑定全局变量
+    x=x+1
