@@ -376,3 +376,69 @@ x=1
 def change_global():
     global x #重绑定全局变量
     x=x+1
+from random import choice
+x=choice(['Hello,world!',[1,2,'e','e',4]])
+x.count('e')#方法
+def add(x,y):
+    return x+y
+add(1,2)
+add('Fish','License')
+o=OpenObject()#This is how we create objects，将变量绑定到对象上，在用全局变量写下类的情况下
+o.setName('Sir Lancrlot')
+o.getName
+globalName=o.getname()#如果o变量的存储在全局变量globalName中
+globalName='Sir Gumby'#全局变量发生变化时，变量也发生改变，不得不关心globalName的内容，要确保不会对变量进行任何更改
+o.getName()
+o1=OpenObjects()
+o2=OpenObjects()
+o1.setName('Robin Hood')
+o2.getName()#设置多个OpenObjects实例时，因为变量相同，可能会发生混淆，此例中，设定一个名字后，其他的名字也自动设定
+c=CloseObject()#在用特性重写类的情况下，特性即对象的内部变量，封装在对象内
+c.SetName('Sir Lancelot')
+c.getname()
+r=CloseObject()
+r.setName('Sir Robin')#方法改变的是对象的内部特性，而非全局变量
+r.getName()
+c.getName()
+##重要：关于类
+__metaclass__=type #确定使用新式类
+class Person:
+    def setName(self,name):#self是方法与函数的区别，方法可以将他们的第一个参数绑定到所属的实例上
+        self.name=name
+    def getName(self):
+        return self.name
+    def greet(self):
+        print "Hello,world!I'm %s."%self.name
+foo=Person()
+bar=Person()
+foo.setName('Luke Skywalker')
+bar.setName('Anakin Skywalker')
+foo.greet()
+bar.greet()
+foo.name
+bar.name='Yoda'#特性可以外部访问
+bar.greet()
+__metaclass__=type
+class Class:
+    def method(self):
+        print 'i have a self!'
+def function():
+    print 'i don\'t'
+instance=Class()#其实是一个实例
+instance.method()
+instance.method=function()
+instacne.method
+class Bird:
+    song='Squaawk'
+    def sing(self):
+        print self.song
+bird=Bird()
+bird.sing()
+birdsong=bird.sing#变量绑定到绑定方法上，它仍旧绑定在类的相同实例上
+birdsong()
+
+
+
+
+
+
