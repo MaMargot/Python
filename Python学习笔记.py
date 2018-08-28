@@ -436,6 +436,86 @@ bird=Bird()
 bird.sing()
 birdsong=bird.sing#变量绑定到绑定方法上，它仍旧绑定在类的相同实例上
 birdsong()
+c.getName
+c.name='Sir Gumby'#从程序外部访问一个对象特性
+c.getname()
+class Secretive:
+    def __inaccessible(selfself):#通过增加双下划线，可以讲方法或者特性变为私有化
+        print "Bet you can't see me ..."
+    def accessible(selfself):
+        print "the secret message is "
+        self.__inaccessible
+s=Secretive()
+s.__inaccessible()
+s.accessible()
+s._Secretive__inacccesible()#在类的内部定义中，所有的双下划线都被翻译成了单下划线，实际还是可以在类外访问的
+def foo(x):return x*x
+foo=lambda x:x*x#上下等价
+class C :
+    print "Class C being defined"
+class MemberCounter:
+    members=0#定义一个可供所有成员（实例）访问的变量
+    def init(self):
+        MemberCounter.members+=1
+m1=MemberCounter()
+m1.init()
+MemberCounter.members
+m2=MemberCounter()
+m2.init()
+MemberCounter.members#类内的变量可以被所有实例访问
+m1.members='Two'
+m1.members#重！！！绑定members的特性，屏蔽了类范围内的变量
+m2.members
+class Filter:
+    def init(self):
+        self.blocked=[]
+    def filter(self,sequence):
+        return [x for x in sequence if x not in self.blocked ]
+class SPAMFilter(Filter):#SPAMFilter是Filter的子类
+    def init(self):#重写Filter超类中的init方法
+        self.blocked=['SPAM']
+f=Filter()
+f.init()
+f.filter([1,2,3])
+s=SPAMFilter()
+s.init()
+s.blocked=['SPAM','SPAM','SPAM','EGGS','bacons']
+issubclass(Filter,SPAMFilter)#查看一个类是否另一个类的子类
+issubclass(SPAMFilter,Filter)
+SPAMFilter.__bases__#利用特殊特性查看基类
+Filter.__bases__
+s=SPAMFilter
+isinstance(s,SPAMFilter)#查看一个对象是否一类的实例
+isinstance(s,Filter)
+isinstance(s,str)
+s.__class__#查看对象属于哪个类
+class Calculator:
+    def calculate(self,expression):
+        self.value=eval(expression)
+class Talker:
+    def talk(self):
+        print "Hi,my value is ",self.value
+class TalkingCalculator(Calculator,Talker):#多个超类
+    pass
+tc=TalkingCalculator()
+tc.calculate('1+2*3')
+tc.talk()#多重继承，如果一个方法从多个超类继承，要注意超类的顺序，先继承的方法会重写后继承的方法
+hasattr(tc,'talk')#检查所需方法是否存在
+hasattr(tc,'fnord')
+callable(getattr(tc,'talk',NONE))
+callable(getattr(tc,'fnord',None))
+setattr(tc,'name','Mr.Gumby')#设置变量特性
+#__dict__,可以查看对象内所有存储的值
+#inspect模块，可以找到对象由什么组成
+
+#异常
+raise Expection
+raise Expection("hyperdrive overload")
+import exceptions
+dir(exceptions)
+raise ArithmeticError
+
+
 
 
 
