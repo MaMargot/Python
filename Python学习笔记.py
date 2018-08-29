@@ -514,11 +514,119 @@ raise Expection("hyperdrive overload")
 import exceptions
 dir(exceptions)
 raise ArithmeticError
+x=input('Enter the first number:')
+y=input('Enter the second number:')
+print x/y
+try:#捕获异常
+    x=input('Enter the first number:')
+    y=input('Enter the second number:')
+    print x/y
+except ZeroDivisionError:
+    print "The second number can't be zero"
+class MuffledCalculator:
+    muffled = False
+    def calc(self,expr):
+        try:
+            return eval(expr)
+        except ZeroDivisionError:
+            if self.muffled:
+                print 'Division by zero is illegal'
+            else:
+                raise
+calculator=MuffledCalculator()
+calculator.calc("10/2")
+calculator.calc("10/0")
+calculator.muffled=True
+calculator.calc("10/0")
+try:
+    x = input('Enter the first number:')
+    y = input('Enter the second number:')
+    print x / y
+except ZeroDivisionError:
+    print "The second number can't be zero"
+except TypeError:#多条except捕获异常
+    print "That wasn't a number ,was it?"
+try:
+    x = input('Enter the first number:')
+    y = input('Enter the second number:')
+    print x / y
+except (ZeroDivisionError,TypeError,NameError):#一个块捕获两个异常
+    print "Your number were bugs...."
+try:
+    x = input('Enter the first number:')
+    y = input('Enter the second number:')
+    print x / y
+except (ZeroDivisionError,TypeError) ,e:#在expect字句中访问异常本身，就算是捕获到多个异常，也只需要向except提供一个元组
+    print e
+try :
+    print "A simple task"
+except :#except子句中忽略所有异常类，可以捕捉所有异常，但会隐藏错误、捕获用户终止执行的命令
+    print "what? somthing went wrong?"
+else:
+    print "ah....it went as planned"
 
+while True:
+    try :
+        x = input('Enter the first number:')
+        y = input('Enter the second number:')
+        value= x / y
+        print 'x/y is ',value
+    except :
+        print 'Invalid input .please try again'
+    else:
+        break
 
+while True:
+    try :
+        x = input('Enter the first number:')
+        y = input('Enter the second number:')
+        value= x / y
+        print 'x/y is ',value
+    except Exception,e:
+        print 'Invaild input:',e
+        print 'please try again'
+    else:
+        break
+x=None
+try:
+    x=1/0
+finally:
+    print 'Cleaning up.....' #不管try子句是否发生异常
+    del x
 
+try:
+    x=1/0
+except NameError:
+    print "Unknow varibale"
+else:
+    print "That went well"
+finally:
+    print 'Cleaning up.....' #不管try子句是否发生异常
 
+def default():
+    rasie Exception("Something is wrong")
+def ignore_exception():
+    faulty()
+def hanle_exception():
+    try:
+        faulty()
+    except:
+        print 'Exception handled'
+ignore_exception()
+hanle_exception()
 
+def describePerson(person):
+    print 'Description of ',person['name']
+    print 'Age:',person['age']
+    try:
+        print 'Occupation: '+person['occupation']#此处使用加号而不是逗号，防止occupation在异常引发前被打印出来
+    except KeyError:
+        pass
 
-
+try:
+    obj.write
+except AttributeError:
+    print 'The object is not writeable'
+else:
+    print 'The object is writeable'
 
