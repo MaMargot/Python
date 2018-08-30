@@ -630,3 +630,82 @@ except AttributeError:
 else:
     print 'The object is writeable'
 
+#魔法方法、属性和迭代器
+class FooBar:
+    def __init__(self):#当一个对象被创建后，会立即调用构造方法
+        self.somevar=42
+f=FooBar()
+f.somevar
+class FooBar:
+    def __init__(self,value=42):
+        self.somevar=value
+f=FooBar("This is a construct argument")
+f.somevar
+class A:
+    def hello(self):
+        print "hello,I'm A"
+class B(A):
+    pass
+a=A()
+b=B()
+a.hello()
+b.hello()
+class B(A):
+    def hello(self):
+        print "hello,I'm B"
+b=B()
+b.hello()
+class Bird:
+    def __init__(self):
+        self.hungry=True
+    def eat(self):
+        if self.hungry:
+            print "Aaaah...."
+            self.hungry=False
+        else:
+            print 'No.thanks'
+b=Bird()
+b.eat()
+b.eat()
+class SongBird(Bird):
+    def __init__(self):
+        self.sound("Squawk")
+    def sing(self):
+        print self.sound
+sb=SongBird()
+sb.sing()
+sb.eat()#在SongBird中，构造方法被重写，但新的构造方法没有任何关于初始化hungry的代码，必须调用超类构造方法未绑定版本或使用super
+
+class SongBird:
+    def __init__(self):
+        Bird.__init__(self)
+        self.sound='Squawk'
+    def sing(self):
+        print self.sound
+sb=SongBird()
+sb.sing()
+sb.eat()
+sb.eat()
+
+__metaclass__=type
+class Bird:
+    def __init__(self):
+        self.hungry=True
+    def eat(self):
+        if self.hungry:
+            print "Aaaa...."
+            self.hungry=False
+        else :
+            print "No,thanks"
+class SongBird(Bird):
+    def __init__(self):
+        super(SongBird,self).__init__()
+        self.sound = 'Squawk'
+        def sing(self):
+            print self.sound
+sb=SongBird()
+sb.sing()
+sb.eat()
+sb.eat()
+
+def
