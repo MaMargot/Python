@@ -708,4 +708,109 @@ sb.sing()
 sb.eat()
 sb.eat()
 
-def
+def checkIndex(key):
+    """
+    所给的键是能接受的索引吗？
+    为了能被接受，键应该是一个非负整数，会引发TypeError；如果它是负数，则会引发一个IndexError （因为序列是无限长的）
+    """
+    if not isinstance(key,(int,long)) : raise TypeError
+    if key<0: raise IndexError
+class ArithmeticSequence:
+    def __init__(self,start=0,step=1):
+       """
+       初始化算术序列
+        起始值——序列中的第一个值
+        步长--两个相邻值之间的差别
+        改变——用户修改的值的字典
+       """
+    self.start=start #保存开始值
+    self.step=step #保存步长值
+    self.change={} #没有被修改项
+    def __getitem__(self,key):
+        """
+        Get an item from arithmetic sequence
+        """
+        checkIndex(key)
+        try :
+            return self.change[key] #修改了吗
+        except KeyError:#否则....
+            return self.start+key*self.step #....计算值
+    def __setitem__(self, key, value):
+        """
+        修改算术序列中的一个值
+        """
+        checkIndex(key)
+        self.change[key]=value #保存更改后的值
+s=ArithmeticSequence(1,2)
+s[4]
+s[4]=2
+s[5]
+s["four"]
+s[-42]
+class CounterList(list):#子类化内建类型
+    def __init__(self,*args):
+        super(CounterList,self).__init__(*args)
+        self.counter=0
+    def __getitem__(self, index):
+        self.counter+=1
+        return super(CounterList,self).__getitem__(index)
+C1=CounterList(range(10))
+C1
+C1.reverse()
+C1
+del C1[3:6]
+C1.counter()
+C1
+C1[4]+C[2]
+C1.counter()
+class Rectangle:
+    def __init__(self):
+        self.width=0
+        self.heigth=0
+    def setsize(self,size):
+        self.width,self.hight=size
+    def getsize(self):
+        return self.width,self.height
+r=Rectangle()
+r.width=10
+r.hight=5
+r.getsize()
+r.setsize((150,100))
+#新式类中的property，创建特殊属性
+__metaclass__=type
+class Retangle:
+    def __init__(self):
+        self.width=0
+        self.heigth=0
+    def setSize(self,size):
+        self.width,self.heigth=size
+    def getsize(self):
+        return self.width,self.heigth
+    size=property(getsize,setsize)
+r=Rectangle()
+r.width=10
+r.heigth=5
+r.size
+r.size=150,100#property函数创建了一个属性size，其中访问器函数被用作参数（先是取值，然后是赋值）
+r.width
+#静态方法和类成员方法,classmethod必须有一个指向类对象的引用作为第一个参数而staticmethod可以没有任何参数
+__metaclass__=type
+class Myclass:
+    def smeth():
+        print "This is a static method"
+    smeth=staticmethod(smeth)
+    def cmeth(cls):
+        print "This is a class method of ",cls
+    cmeth=classmethod(cmeth)
+#修饰器
+__metaclass__=type
+class Myclass:
+    @staticmethod
+    def semth():
+        print "This is a static method"
+    @classmethod
+    def cmeht(cls):
+        print "This is a class method of ",cls
+Myclass.smeth()
+Myclass.cmeth()
+
