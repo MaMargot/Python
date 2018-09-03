@@ -813,4 +813,53 @@ class Myclass:
         print "This is a class method of ",cls
 Myclass.smeth()
 Myclass.cmeth()
+class Rectangle:
+    def __init__(self):
+        self.width=0
+        self.height=0
+    def __setattr__(self,name,value):
+        if name=='size':
+            self.width,self.width=value
+        else:
+            self.__dict__[name]=value##此处采用__dict__是为了避免__setattr__再次被调用，导致程序进入死循环
+    def __getattr__(self, name):##__getattr__会拦截所有的特性的访问，也会拦截对__dict__的访问，访问__getattribute__中与self相关特性时，使用超类__getattribute__方法（使用super）时唯一的安全途径
+        if name=='size':
+            return self.width,self.height
+        else:
+            raise AttributeError
+class Fibs:
+    def __init__(self):
+        self.a=0
+        self.b=1
+        self.n=0
+    def next(self):##相当于__next__的存在
+        self.a,self.b=self.b,self.a+self.b
+        return self.a
+    def call(self):
+        self.n=self.n+1
+        return self.n
+    def __iter__(self):
+        return self
+fibs=Fibs()
+fibs
+for f in fibs:
+    if f>1000:
+        print f
+        break
+it=iter({1,2,3})
+it.next()
+it.next()
+class TestIterator:
+    value=0
+    def next(self):
+        self.value+=1
+        if self.value>10:
+            raise StopIteration
+        return self.value
+    def __iter__(self):
+        return self
+ti=TestIterator()
+list(ti)##使用list构造方法显式地将迭代器转化为列表
+
+
 
