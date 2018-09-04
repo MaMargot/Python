@@ -860,6 +860,75 @@ class TestIterator:
         return self
 ti=TestIterator()
 list(ti)##使用list构造方法显式地将迭代器转化为列表
+nested=[[1,2],[3,4],[5]]
+def flatten(nested):
+    for sublist in nested:
+        for element in sublist:
+            yield element#包含yield的语句生成器,每次产生多个值，每次产生一个值，函数就会被冻结，即函数停在那点等待被激活
+for num in flatten(nested):
+    print num
+list(flatten(nested))
+g=((i+2)**2 for i in range(2,27))#返回的是生成器，与列表推导式不同在于，其用圆括号
+g.next()
+sum(i**2 for i in range(10))#生成器推导式可在当前圆括号内使用
+def flatten(nested):#递归生成器，若nested为字符串，会产生两个问题:1、类似于字符串对象当成原子值，而不是一个应当展开的对象；2、迭代实际上会产生无穷递归，一个字符串的第一个元素是另一个长度为1的字符串，而长度为1的字符创的第一个元素是字符串本身
+    try :
+        for sublist in nested:
+            for element in sublist:
+                yield element
+    except  TypeError:
+        yield nested#避免对一个元素进行迭代
+list(flatten([[[1],2],3,4,[5,[6,7]],8]))
+def flatten(nested):
+    try:
+        try: nested +''
+        except TypeError: pass
+        else: raise TypeError
+        for sublist in nested:
+            for element in sublist :
+                yield element
+    except TypeError:
+        yield nested
+list(flatten(['foo',['bar',['baz']]]))
+def simple_generator():#生成器的函数部分
+    yield 1#生成器的迭代部分
+simple_generator
+simple_generator()
+#生成器方法
+#1、外部作用域访问生成器的send方法，就像访问next方法一样，只不过前者使用一个参数
+#2、在内部则挂起生成器，yield现在作为表达式而不是语句使用，换句话说，当生成器重新运行的时候，yield方法返回一个值，也就是外部通过send方法发送的值。当next方法，nameyield方法返回None
+#使用send方法(而不是next方法)只有在生成器挂起之后才有意义（也就是在yield函数第一次被执行之后）
+#入股真想对刚刚启动的生成器使用send方法，那么可以将None作为其参数调用
+def repeater(value):
+    while True:
+        new=(yield value)#注意yield表达式的使用
+        if new is not None: value=new
+r=repeater(42)
+r.next()
+r.send("Hello,world!")
+#throw 方法（使用异常类型的调用，还有可选的值以及回溯对象）用于在生成器中引发一个异常（在yield表达式中）
+#close方法（调用时不用参数），用于停止生成器,也是建立在异常的基础上
+r=repeater([1,[3,4]])
+r.next()
+r.send("hell,world")
+r
+r.next()
+def flatten(nested):#普通函数版本
+    result=[]
+    try:#不要迭代类似字符串的对象
+        try:
+            nested+" "
+        except TypeError: pass
+        else: raise TypeError
+        for sublist in nested :
+            for element in sublist:
+                result.append(element)
+    except TypeError:
+        result.append(nested)
+    return result
+#re模块
+
+
 
 
 
