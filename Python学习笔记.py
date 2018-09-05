@@ -927,6 +927,25 @@ def flatten(nested):#普通函数版本
         result.append(nested)
     return result
 #re模块
+#通配符：
+#（.）可以匹配任何字符串（除了换行符），只能匹配一个字母
+#（\\）双反斜杠，进行转义，也可以用r'...'原始字符串减少为单反斜杠
+#[a-zA-Z0-9]字符集，匹配a-z，A-Z，0-9的任意一个字符，只能匹配一个这样的字符
+#（^）脱字符，匹配除内容外的字符，[^abc]
+#（|）管道字符，匹配选定的特殊字符，如：'python|perl'
+#（），子模式，也适用于单个字符如：'p(ython|erl)'
+#?,可选项，如r'(http://)?(www\.)python\.org'
+#(pattern)*:允许模式重复0次或多次；
+#(pattern)+:允许模式重复1次或多次；
+#(pattern){m,n}:允许模式重复m-n次；如：r'w*\.python\.org'
+#如果想在字符串开头，而不是其他位置匹配,可以用（^）脱字符标记开始，'^ht+p'会匹配'http://python.org'及其他类似的
+#如果想在字符串结尾，则用（$）符号
+import re
+some_text="alpha, beta,,,,ganma delta"
+re.split('[, ]+',some_text)
+re.split('o(o)',foobar)
+re.split('[, ]+',some_text,maxsplit=2)
+re.split('[, ]+',some_text,maxsplit=1)
 
 
 
