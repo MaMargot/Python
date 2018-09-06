@@ -946,6 +946,38 @@ re.split('[, ]+',some_text)
 re.split('o(o)',foobar)
 re.split('[, ]+',some_text,maxsplit=2)
 re.split('[, ]+',some_text,maxsplit=1)
+pat='[a-zA-Z]+'
+text='"Hm...Err--are you sure?"he said ,sounding insecure'
+re.findall(pat.text)
+pat=r'[.?\-]'#-被转义了，不会被当a-z
+re.finall(pat,text)
+pat='{name}'
+text='Dear {name}'
+re.sub(pat,'Me.Gumby',text)#替换最左端并且非重叠的子字符串
+re.compile('[^abc]')#根据包含正则表达式的字符串创建模式对象
+if re.search(pat,string):#在字符串中寻找模式
+    print 'Found it'
+re.escape('www.python.org')
+re.escape("But where is the ambiguity")#将字符串中的所有特殊正则表达式字符转义
+m=re.match(r'www\.(.*)\..{3}','www.python.org')
+m.group(1)#返回模式中与给定组匹配的子字符串
+m.statr(1)#返回给定匹配项的开始索引
+m.end(1)#返回结果是结束索引+1
+m.span(1)#以元组形式放回定组的开始和结束位置索引，默认为0，即整个模式
+emphasis_pattern=r'\*([^\*]+)\*'
+emphasis_pattern=re.compile(r'''
+    \* #beginning emphasis tag -- an asterisk
+    (  #begin group for capture pharse
+    [^\*]+ #capture anything except asterisks
+    ) #End group
+    \* #ending emphasis tag
+    ''',re.VERBOSE) #re.VERBOSE允许模式中添加空白（空白字符、tab、换行符等等）
+re.sub(emphasis_pattern,r'<em>\1</em>','hello,*world*!')#在替换字符串中使用组号
+emphasis_pattern=r'\*(.+)\*'#重复运算符默认是贪婪地，会尽可能多的匹配
+re.sub(emphasis_pattern,r'<em>\1</em>','*This* is *it*! ')
+emphasis_pattern=r'\*\*(.+?)\*\*'#用+？来替换+，他会尽可能少的匹配
+re.sub(emphasis_pattern,'r\*\*<em>\1<em>','**This **is **it**!')
+
 
 
 
