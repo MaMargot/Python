@@ -949,8 +949,13 @@ re.split('[, ]+',some_text,maxsplit=1)
 pat='[a-zA-Z]+'
 text='"Hm...Err--are you sure?"he said ,sounding insecure'
 re.findall(pat.text)
-pat=r'[.?\-]'#-被转义了，不会被当a-z
+pat=r'[.?\-",]+'#-被转义了，不会被当a-z
 re.finall(pat,text)
+s = "aa bb aaa bbb aabbcc aaabbb  abab ababab"
+re.findall('(ab).*?',s)  #同时匹配ab
+re.findall('(ab).*',s)  #同时匹配ab
+re.findall('(ab).',s)  #同时匹配ab
+re.findall('(ab)',s)  #同时匹配ab
 pat='{name}'
 text='Dear {name}'
 re.sub(pat,'Me.Gumby',text)#替换最左端并且非重叠的子字符串
@@ -972,11 +977,57 @@ emphasis_pattern=re.compile(r'''
     ) #End group
     \* #ending emphasis tag
     ''',re.VERBOSE) #re.VERBOSE允许模式中添加空白（空白字符、tab、换行符等等）
-re.sub(emphasis_pattern,r'<em>\1</em>','hello,*world*!')#在替换字符串中使用组号
+re.sub(emphasis_pattern,r'<em>\1</em>','hello,*world*!')#在替换字符串中使用组号(很重要)
 emphasis_pattern=r'\*(.+)\*'#重复运算符默认是贪婪地，会尽可能多的匹配
 re.sub(emphasis_pattern,r'<em>\1</em>','*This* is *it*! ')
 emphasis_pattern=r'\*\*(.+?)\*\*'#用+？来替换+，他会尽可能少的匹配
 re.sub(emphasis_pattern,'r\*\*<em>\1<em>','**This **is **it**!')
+#find_sender.py,寻找Email发信人
+import fileinput,re
+pat=re.compile(r'From:(.*)<.*?>$')
+for line in fileinput.input():
+    m=pat.match(line)
+    if m:print m.group(1)
+#寻找表头的发信人
+import fileinput,re
+pat=re.compile(r'[a-z\-\.]+@[a-z\-\.]+',re.IGNORECASE)#忽略大小写
+addresses=set()#集合
+for line in fileinput.input():
+    for address in pat.findll(pat.line):
+        addresses.add(address)
+    for address in sorted(addresses):
+        print address
+#模板系统
+#template.py
+import fileinput,re
+#匹配中括号里的字段
+field_pat=re.compile(r'\[.+?\]')
+#将变量收集到这里
+scope={}
+#用于re.sub中
+def replacement(match):
+    code=match.group(1)
+    try :
+        #如果字段可以求值，则返回他
+        return str(eval(code,scope))
+    except SyntaxError:
+        #否则执行相同域内的赋值语句
+        exec code in scope
+        #.......返回空字符串
+        return ''
+#将所有文本以一个字符串形式获取：
+#还有其他方法，参见第11章
+lines=[]
+for line in fileinput.input():
+    lines.append(line)
+text=' '.join(lines)
+#将field魔石的所有匹配项都替换掉
+print field_pat.sub(replacement,text)
+
+
+
+
+
 
 
 
