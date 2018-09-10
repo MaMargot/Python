@@ -1021,8 +1021,43 @@ lines=[]
 for line in fileinput.input():
     lines.append(line)
 text=' '.join(lines)
-#将field魔石的所有匹配项都替换掉
+#将field模式的所有匹配项都替换掉
 print field_pat.sub(replacement,text)
+#集合,由序列(可迭代对象)构成，主要用于检查成员资格,
+set(range(10))
+set([0,1,2,3,4,5,6,7,8,9])
+set([0,1,2,3,4,5,0,1,2,3,4,5])
+set(['fee','fie','foe'])#元素的顺序是随意的
+a=set([1,2,3])
+b=set([2,3,4])
+a.union(b)#可以集合的操作
+a|b
+c=a&b
+c.issubset(a)
+c<=a
+c.issuperset(a)
+c>=a
+a.intersection(b)
+a&b
+a.difference(b)
+a-b
+a.symmetric_difference(b)
+a^b
+a.copy()
+a.copy() is a
+mysets=[]
+for i in range(10):
+    mysets.append(set(range(i,i+5)))
+reduce(set.union,mysets)#uion的未绑定方法
+#集合是可变的，不用作为字典的中的键
+#集合本身只能包含不可变（可散列的）值，所以也不能包含其他集合
+a=set()
+b=set()
+a.add(b)
+a.addfrozenset(b)#frozenset构造创建给定集合的副本
+
+
+
 
 
 
