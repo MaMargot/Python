@@ -1055,7 +1055,47 @@ a=set()
 b=set()
 a.add(b)
 a.addfrozenset(b)#frozenset构造创建给定集合的副本
-
+#数据库连接
+import sqlite3
+conn=sqlite3.connect('somedatabase.db')
+curs=conn.cursor()#获得连接游标，用来执行SQL查询
+conn.commit()#提交，挂起事务
+conn.close()#关闭数据库连接
+#例子
+import sqlite3
+def convert(value):
+    if value.startswith('~'):
+        return value.strip('~')
+    if not value:
+        value='0'
+    return float(value)
+conn=sqlite3.connect('foo.db')
+curs=conn.cursor()
+curs.execute('''
+create table food(
+id text primary key,
+ desc text,
+ water float,
+ kcal float)
+''')
+query='Insert into food values(?,?,?,?)'
+for line in open('ABBREV.txt'):
+    fields=line.split('^')
+    vals=[convert(f) for f in fields[:field_count]]
+    curs.execute(query,vals)
+conn.commit()
+conn.close()
+import sqlite3,sys
+conn=sqlite3.connect('food.db')
+curs=conn.cursor()
+query='select * from food where %s'%sys.argv[1]
+print query
+curs.execute(query)
+names=[f[0] for f in curs.description]
+for row in curs.fetchall():
+    for pair in zip(names.row):
+        print '%s:%s'%pair
+    print
 
 
 
