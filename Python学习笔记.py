@@ -1096,9 +1096,38 @@ for row in curs.fetchall():
     for pair in zip(names.row):
         print '%s:%s'%pair
     print
-
-
-
+#网络编程
+#一个小型服务器
+import socket#sock模块，包含一个基本组件套接字，主要是两个程序之间的信息通道
+s=socket.socket()
+host=socket.gethostname()#获得主机名
+host
+port=1234
+s.bind((host,port))#(host,port)是一个地址，listen要在bind之后
+s.listen(5)#监听这个地址,accept要在监听之后
+while True:
+    c,addr=s.accept()#接受客户端连接，返回(client，address)，client是客户端套接字，会阻塞知道客户端连接
+    print 'Got connection from',addr
+    c.send('Thank you for connection')
+    c.close()
+#一个小型客户机
+import socket
+s=socket.socket()
+host=socket.gethostname()
+port=1234
+s.connect((host,port))
+print s.recv(1024)#1024为所需的最大字节数用于接受数据，可修改
+#urllib和urllib2
+import urllib
+from urllib import urlopen#通过远程访问文件
+webpage=urlopen('http://www.python.org')#打开远程文件
+import re
+text=webpage.read()#urlopen支持close、read、readline、readlines方法，也支持迭代
+m=re.search('<a herf="([^"]+)" .*?>about</a>',text,re.IGNORECASE)
+m.group(1)
+urlretrieve('http://www.python.org','C://python_webpage.html')#下载文件并在本地文件中存出一个文件的副本，
+# 返回一个元组（filename，headers）其中filename是本地文件的名字（有urlib自动创建），headers包含一些远程文件信息
+#将python主页的内容存储在C：python_webpage.html，若没有指定位置，则存储在临时位置，可以urlcleanup函数清除，不需要参数，open函数打开
 
 
 
