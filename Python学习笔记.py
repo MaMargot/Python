@@ -1128,6 +1128,50 @@ m.group(1)
 urlretrieve('http://www.python.org','C://python_webpage.html')#下载文件并在本地文件中存出一个文件的副本，
 # 返回一个元组（filename，headers）其中filename是本地文件的名字（有urlib自动创建），headers包含一些远程文件信息
 #将python主页的内容存储在C：python_webpage.html，若没有指定位置，则存储在临时位置，可以urlcleanup函数清除，不需要参数，open函数打开
+##屏幕抓取
+from urllib2 import urlopen
+doc = urlopen("http://www.baidu.com").read()
+print doc
+from urllib import urlopen
+import re
+p=re.compile('<h3><a .*?><a .*? href="(.*?)">(.*?)</a>')
+text=urlopen('http://python.org/community/jobs').read()
+for url,name in p.findall(text)
+    print '%s (%s)'%(name,url)
+from subprocess import Popen,PIPE #tidy中的subprocess模块，用来修复不规范且随意的HTML的工具
+text=open('messy.html').read()
+tidy=Popen('tidy',sdin=PIPE,stdout=PIPE,stderr=PIPE)
+tidy.stdin.write(text)
+tidy.stdin.close()
+print tidy.stdout.read()
+#使用HTMLOASESER模块屏幕抓取程序
+from urllib import urlopen
+from HTMLParser import HTMLParser
+class scraper(HTMLParser):
+    in_h3=False
+    in_link=False
+    def handle_starttag(self, tag, attrs):#找到开始标签时调用，attrs是（名称，值）的序列
+        attrs=dict(attrs)
+        if tag==h3:
+            self.in_h3=True
+        if tag=='a'and'herf' in attrs:
+            self.in_link=True
+            self.chunks=[]
+            self.url=attrs['href']
+    def handle_data(self,data):#使用文本数据时调用
+        if self.in_link:
+            self.chunks.append(data)
+    def handle_endtag(self, tag):#找到结束标签时调用
+        if tag=='h3':
+            self.in_h3=False
+        if tag=='a':
+            if self.in_h3 and self.in_link:
+                print '%s (%s)'%(' '.join(self.chunks),self.url )
+            self.in_link=False
+text=urlopen('http://python.org/community/jobs').read()
+parser=Scraper()
+parser.feed(text)
+parser.close()
 
 
 
