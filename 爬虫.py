@@ -79,7 +79,7 @@ for name in namelist:
 #text，文本参数，用标签的文本内容去匹配，而不是标签的属性
 namelist=bsObj.findAll(text="the prince")
 print(len(namelist))
-#limit,find等价于findALL的limit为1，获得的前几项结果是按照网页上的额顺序排序
+#limit,find等价于findALL的limit为1，获得的前几项结果是按照网页上的顺序排序
 #keyword，可以选择具有指定属性的标签
 allText=bsObj.findAll(id="text")
 print(allText[0].get_text())#获得的是naviablestring对象，表示标签里面的文字
@@ -91,6 +91,96 @@ print(allText[0].get_text())#获得的是naviablestring对象，表示标签里�
 #<!--像这样-->用来查找HTML文档的注释标签,comment对象
 
 #导航树：痛过标签在文档中的位置来查找标签
+#一般情况下，BeauitfulSoup函数总是处理当前标签的后代标签，如bsObj.body.h1
+import urllib
+from bs4 import BeautifulSoup
+html=urllib.urlopen("http://www.pythonscraping.com/pages/page3.html")
+bsObj=BeautifulSoup(html)
+for child in bsObj.find("table",{"id":"giftList"}).children:
+    print(child)
+from urllib import urlopen
+from bs4 import BeautifulSoup
+html=urlopen("http://www.pythonscraping.com/pages/page3.html")
+bsObj=BeautifulSoup(html)
+for sibling in bsObj.find("table",{"id":"giftList"}).tr.next_siblings:
+    print(sibling)
+#打印产品列表里的所有行的产品，第一行标题除外：
+#1、对象不能把自己作为兄弟标签
+#2、只调用后面的兄弟标签
+#next_sibling与previous_sibling返回的是单个标签，previous_sibling一组兄弟标签中的前一个标签
+#next_sibling与previous_siblings返回的是一组标签
+from urllib import urlopen
+from bs4 import BeautifulSoup
+html=urlopen("http://www.pythonscraping.com/pages/page3/html")
+bsObj=BeautifulSoup(html)
+print(bsObj.find("img",attrs={"src":"../img/gifts/img1.jpg"}).parent.previous_sibling.get_text())
+print(bsObj.find("img",src="../img/gifts/img1.jpg").parent.previous_sibling.get_text())
+bsObj.find("img",{"src":"../img/gifts/img1.jpg"}).parent
+from urllib import urlopen
+from bs4 import BeautifulSoup
+import re
+html=urlopen("http://www.pythonscraping.com/pages/page3.html")
+bsObj=BeautifulSoup(html)
+images=bsObj.findAll("img",{"src":re.compile(r"../img/gifts/img.*.jpg")})#用于过滤标签的内容
+for image in images:
+    print (image["src"])
+Mytag.attrs#获取一个标签对象的全部属性
+bsObj.attrs
+bsObj.attrs["src"]#返回的是一个python字典对象，可以获取和操作这些属性
+bsObj.h1.get('attr')
+#Lambda表达式,本质上是一个函数，可以作为其他函数的变量使用，即一个函数不是定义成f(x,y)，而是定义成f(g(x),y)或f(g(x),h(x))
+#允许我们把特定函数类型当做findAll函数的参数，唯一的限制条件是这些函数必须把一个标签作为参数且返回布尔类型。
+soup=BeautifulSoup(html)
+soup.findAll(lambda tag:len(tag.attrs)==2)#获取两个属性标签，评估每一个标签对象，把评估结果为真的标签保留，把其他标签剔除
+
+#动态页面爬取
+from urllib import urlopen
+from bs4 import BeautifulSoup
+html=urlopen("http://en.wikipedia.org/wiki/Kevin_Baocon")
+bsObj=BeautifulSoup(html)
+bsObj.findAll("a")
+for link in bsObj.findAll("a"):
+    if 'href' in link.attrs:
+        print (link.attrs['href'])
+link.attrs
+from urllib import urlopen
+from bs4 import BeautifulSoup
+import re
+html=urlopen("http://en.wikipedia.org/wiki/Kevin_Bacon")
+bsObj=BeautifulSoup(html)
+for link in bsObj.find("div",{"id":"bodyContent"}).findAll("a",href=re.compile("^(/wiki/)((?!:).)*$")):
+    if 'href' in link.attrs:
+        print(link.attrs['href'])
+links=bsObj.find("div",{"id":"bodyContent"}).findAll("a",href=re.compile("^(/wiki/)((?!:).)*$"))
+str(links)
+type(links)
+links[1]
+#其中^((?!:).)*$匹配不以：结尾的
+from urllib import urlopen
+from bs4 import BeautifulSoup
+import datetime
+import random
+import re
+random.seed(datetime.datetime.now())
+def getlinks(articleurl):
+    html=urlopen("htt://en.wikipedia.org"+articleurl)
+    bsObj=BeautifulSoup
+    return bsObj.find("div",{'id':'bodyContent'}).findAll("a",href=re.compile("^(/wiki/)((?!:).)*$"))
+links=getlinks("/wiki/Kevin_Bacon")
+while len(links)>0:
+    newArticle=links[random.randint(0,len(links)-1)].attrs["href"]
+    print (newArticle)
+    links=getlinks(newArticle)
+
+
+
+
+
+
+
+
+
+
 
 
 
