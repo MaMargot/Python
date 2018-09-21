@@ -154,6 +154,7 @@ for link in bsObj.find("div",{"id":"bodyContent"}).findAll("a",href=re.compile("
 links=bsObj.find("div",{"id":"bodyContent"}).findAll("a",href=re.compile("^(/wiki/)((?!:).)*$"))
 str(links)
 type(links)
+links
 links[1]
 #其中^((?!:).)*$匹配不以：结尾的
 from urllib import urlopen
@@ -172,7 +173,90 @@ while len(links)>0:
     print (newArticle)
     links=getlinks(newArticle)
 
+from urllib import urlopen
+from bs4 import BeautifulSoup
+import re
+pages=set()#存放不重复元素，元素顺序随意
+def getlinks(pageurl):
+    global pages
+    html=urlopen("http://en.wikipedia.org"+pageurl)
+    bsObj=BeautifulSoup(html)
+    for link in bsObj.findAll("a",href=re.compile("^(/wiki/)")):
+        if 'href' in link.attrs:
+            if(link.attrs['href']) not in pages:
+                #我们遇到了新页面
+                newpage=link.attrs['href']
+                print(newpage)
+                pages.add(newpage)
+                getlinks(newpage)
+getlinks("")
+#python默认的递归限制是1000次！！！！
+from urllib import urlopen
+from bs4 import BeautifulSoup
+import re
+pages=set()
+def getlinks(pageurl):
+    global pages
+    html=urlopen("http://en.wikipedia.org"+pageurl)
+    bsObj=BeautifulSoup(html)
+    try:
+        print (bsObj.h1.get_text())
+        print (bsObj.find(id="mw-content-text").findAll("p")[0])
+        print (bsObj.find(id="ca-edit").find("span").find("a").attrs['href'])
+    except AttributeError:
+        print("页面缺少一些属性！不过不用担心！")
+    for link in bsObj.findAll("a",href=re.compile("^(/wiki/)")):
+        if 'href' in link.attrs:
+            if link.attrs['href'] not in pages:
+                #我们遇到了新页面
+                newpage=link.attrs['href']
+                print("----------\n"+newpage)
+                pages.add(newpage)
+                getlinks(newpage)
+getlinks("")
 
+from urllib import urlopen
+from bs4 import BeautifulSoup
+import re
+import datetime
+import random
+pages=set()
+random.seed(datetime.datatime.now())
+#获取页面所有内链的列表
+def getinternallinks(bsObj,includeurl):
+    internallinks=[]
+    #找出所有以“/”开头的链接
+    for link in bsObj.findAll("a",href=re.compile("^(/|.*"+includeurl+")")):#其中双引号全部换成单引号也一样，但不能将“+”号两边的双引号换成单引号，这样就将+includeUrl+变成一个字符串了
+        #^ (/ |.* "+includeUrl+")此正则表达式意思为：匹配以“ / ”开头的字符串，或匹配包含“includeUrl”这个变量内容的字符串
+        if link.attrs['href'] is not None:
+            if link.attrs['href'] not in internallinks:
+                internallinks.append(link.attrs['href'])
+    return internallinks
+#获取页面所有外链的列表
+def getexternallinks(bsObj,excludeurl):
+    externallinks=[]
+    #找出所有以"http"或"www"开头且不包含当前url的链接
+    for link in bsObj.findAll("a",href=re.compile("^(http|www)((?!"+excludeurl+").)*$")):
+        if link.attrs['href'] is not None:
+            if link.attrs['href'] not in externallinks:
+                externallinks.append(link.attrs['href'])
+    return externallinks
+def splitAddress(address):
+    addressParts=address.replace("http://","").split("/")
+    return addressParts
+def getrandomexternallinks(startingpage):
+    html=urlopen(startingpage)
+    bsObj=BeautifulSoup(html)
+    externallinks=getexternallinks(bsObj,splitAddress(startingpage)[0])
+    if len(externallinks)==0:
+        internallinks=getinternallinks(startingpage)
+        return getexternallinks(internallinks[random.randint(0,len(internallinks)-1)])
+    else:
+        return externallinks[random.randint(0,len(externallinks)-1)]
+def followexternalonly(startingsite):
+    externallink=getrandomexternallinks("http://oreilly.com")
+    print("随机外链式："+externallink)
+    followexternalonly(externallink)
 
 
 
