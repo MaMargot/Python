@@ -258,6 +258,66 @@ def followexternalonly(startingsite):
     print("随机外链式："+externallink)
     followexternalonly(externallink)
 
+#收集网站上发现的所有外链列表
+allExtlinks=set()
+allintlinks=set()
+def getallexternallinks(siteurl):
+    html=urlopen(siteurl)
+    bsObj=BeautifulSoup(html)
+    internallinks=getinternallinks(bsObj,splitAddress(siteurl)[0])
+    externallinks=getexternallinks(bsObj,splitAddress(sireurl)[0])
+    for link in externallinks:
+        if link not in allExtlinks:
+            allExtlinks.add(link)
+            print(link)
+    for link in internallinks:
+        if link not in allintlinks:
+            print("即将获取连接的URL是："+link)
+            allintlinks.add(link)
+            getallexternallinks(link)
+getallexternallinks("http://oreilly.com")
+
+#scrapy采集,可采集一个或多个域名的信息
+#$scrapy startproject wikiSpider ，在cmd中运行建立Scrapy项目
+#创建articleSpider.py程序,并在items.py定义不同的条目(比如url、content、header、image等)
+#$scrapy crawl article -s LOG_FILE=wiki.log,输出到一个独立的文件里
+#Scrapy用Item对象决定要从它的浏览页面中提取哪些信息
+#$ scrapy crawl article -o articles.csv -t csv
+#$ scrapy crawl article -o articles.json -t json
+#$ scrapy crawl article -o articles.xml -t xml
+#https://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html
+
+#API
+#GET 就是你在浏览器中输入网址浏览网站所做的事情。当你访问 http://freegeoip.net/
+#json/50.78.253.58 时， 就会使用 GET 方法。
+#POST 基本就是当你填写表单或提交信息到网络服务器的后端程序时所做的事情。每次当你
+#登录网站的时候，就是通过用户名和（有可能加密的）密码发起一个 POST 请求。如果你用
+#API 发起一个 POST 请求，相当于说“请把信息保存到你的数据库里”。
+#PUT 在网站交互过程中不常用，但是在 API 里面有时会用到。 PUT 请求用来更新一个对象
+#或信息。例
+#DELETE 用于删除一个对象。例如，如果我们向 http://myapi.com/user/23 发出一个 DELETE 请
+#求，就会删除 ID 号是 23 的用户。
+#http://developer.echonest.com/api/v4/artist/songs?api_key=<你的api_key>%20&name=guns%20n%27%20roses&format=json&start=0&results=100
+token = "<your api key>"
+webRequest = urllib.request.Request("http://myapi.com", headers={"token":token})
+html = urlopen(webRequest)
+
+from twitter import Twitter#将对应的信息替换成Twitter给出来的信息
+t=Twitter(auth=OAuth(<Access  Token>,<Access Token Secret>,<Consumer Key>,<Consumer Secret>))
+pythonTweets=t.search.tweets(q="#python")
+print(pythonTweets)#打印一个含有#python标签的推文JOSN列表
+from twitter import *
+t=Twitter(auth=OAuth(Access  Token>,<Access Token Secret>,<Consumer Key>,<Consumer Secret>)))
+statusUpdate=t.status.update(status="Hello,world!")#发布推文
+print(statusUpdate)
+#或区域一组推文的请求，限制条数，请求@montypython推文中按时间排序最靠前的5条推文
+pythonStatus=t.statuses.user_timeline(screen_name="montpython",count=5)
+print(pythonStatus)
+
+#JOSN数据
+
+
+
 
 
 
