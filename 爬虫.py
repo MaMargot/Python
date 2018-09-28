@@ -332,14 +332,147 @@ print(jsonObj.get("arrayOfNums")[1])
 print(jsonObj.get("arrayOfNums")[1]).get("number")+jsonObj.get("arrayOfNums")[2]).get("number")
 print(jsonObj.get("arrayOfFruits")[2]).get("fruit"))
 
+from urllib import urlopen
+from bs4 import BeautifulSoup
+import datetime
+import random
+import re
+random.seed(datetime.datetime.now())
+def getlinks(articleurl):
+   html=urlopen("http://en.wikipedia.org"+articleurl)
+   bsObj=BeautifulSoup(html)
+   return bsObj.find("div",{"id":"bodyContent"}).findAll("a",href=re.compile("^(/wiki/)((?!:).)*$"))
+def gethistoryips(pageurl):
+    #编辑历史页面url链接格式
+    #http://en.wikipedia.org/w/inde.php?title=Title_in_URL&action=history
+    pageurl=pageurl.replace("/wiki/","")
+    historyurl="http://en.wikipedia.org/w/index.php?title="+pageurl+"&acton=history"
+    print("history url is:"+historyurl)
+    html=urlopen(historyurl)
+    bsObj=BeautifulSoup(html)
+    #找出class属性是“mw-anonuserlink”链接
+    #它们用ip地址代替用户名
+    ipAddresses=bsObj.findAll("a",{"class":"mw-anonuserlink"})
+    addresslist=set()
+    for ipAddress in ipAddresses:
+        addresslist.add(ipAddress)
+    return addresslist
+links=getlinks("/wiki/Python_(programming_language)")
+while(len(links)>0):
+    for link in links:
+        print("----------")
+        historyips=gethistoryips(link.attr["href"])
+        for historyip in historyips:
+            print(historyip)
+    newlink=links[random.randint(0,len(links)-1)].attr["href"]
+    links=getlinks(newlink)
+def getCountry(ipAddress):
+    try:
+        response=urlopen("http://freegeoip.net/json/"+ipAddress).read().decode("utf-8")
+    except re.HTTPError:
+        return None
+    responseJson=json.loads(response)
+    return responseJson.get("coountry_code")
+links=getlinks("/wiki/Python_(programming_language)")
+while(len(links)>0):
+    for link in links:
+        print("-----------")
+        historyips=gethistoryips(link.attrs["href"])
+        for historyip in historyips:
+            country=getCountry(historyip)
+            if country is not None:
+                print(historyip+" is from "+country)
+    newlink=links[random.randint(0,len(links)-1)].attrs["href"]
+    links=getlinks(newlink)
 
+#储存文件
+from urllib import urlretrieve
+from urllib import urlopen
+from bs4 import BeautifulSoup
+html=urlopen("http://www.pythonscraping.com")
+bsObj=BeautifulSoup(html)
+imageLocation=bsObj.find("a",{"id":"logo"}).find("img")["src"]
+urlretrieve(imageLocation,"logo.jpg")
 
+import os
+from urllib import urlretrieve
+from urllib import urlopen
+from bs4 import BeautifulSoup
+downloadDirectory="downloaded"
+baseurl="http://pythonscraping.com"
+def getAbsoluteUrl(baseurl,source):
+    if source.startswith("http://www."):
+        url="http://"+source[11:]
+    elif source.startswith("http://"):
+        url=source
+    elif source.startswith("www."):
+        source=source[4:]
+        url="http://"+source
+    else:
+        url=baseurl+"/"+source
+    if baseurl not in url:
+        return None
+    return url
+def getDownloadPath(baseurl,absoluteurl,downloadDirectory):
+    path=absoluteurl.replace("www.","")
+    path=path.replace(baseurl,"")
+    path=downloadDirectory+path
+    directory=os.path.dirname(path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    return path
+html=urlopen("http://www.pythonscraping.com")
+bsObj=BeautifulSoup(html)
+downloadlist=bsObj.findAll(src=True)
+for download in downloadlist:
+    fileurl=getAbsoluteUrl(baseurl,download["src"])
+    if fileurl is not None:
+        print(fileurl)
+        urlretrieve(fileurl, getDownloadPath(baseurl, fileurl, downloadDirectory))
+#编辑csv文件
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+import csv
+csvfile=open("../file/test.csv","w+")
+try :
+    writer=csv.writer(csvfile)
+    writer.writerow(("number","number plus 2","number times 2"))
+    for i in range(10):
+        writer.wirterow((i,i+2,i*2))
+finally:
+    csvfile.close()
+#爬取表格数据
+import csv
+from urllib import urlopen
+from bs4 import BeautifulSoup
+html=urlopen("https://en.wikipedia.org/wiki/Comparison_of_text_editors")
+bsObj=BeautifulSoup(html)
+#主对比表格是当前页面的的第一个表格
+table=bsObj.findAll("table",{"class":"wikitable"})[0]
+table
+rows=table.findAll("tr")
+rows
+csvfile=open("editors.csv","wt")
+writer=csv.writer(csvfile)
+try:
+    for row in rows:
+        csvRow=[]
+        for cell in row.findAll(['td','th']):
+            csvRow.append(cell.get_text())
+            writer.writerow(csvRow)
+finally:
+    csvfile.close()
 
-
-
-
-
-
+#Mysql链接
+import pymysql
+conn=pymysql.connect(host='localhost',port=3306,user='root',passwd='S13227mcj',db='mysql')
+cur=conn.cursor()
+cur.execute("USE scraping")
+cur.execute("select * from page where id=123")
+print(cur.fetchone())
+cur.close()
+conn.close()
 
 
 
