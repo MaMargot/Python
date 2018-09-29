@@ -120,4 +120,13 @@ arr=np.arange(32).reshape((8,4))
 arr[[1,5,7,2],[0,3,1,2]]#!!!类似于交点
 arr[[1,5,7,2]][:,[0,3,1,2]]#!!!类似于交集
 arr[np.ix_([1,5,7,2],[0,3,1,2])]#np.ix_()将两个以为整数数组转换为一个用于选取方形区域的索引器
-
+arr=np.arange(15).reshape((3,5))
+arr
+arr.T#转置
+arr=np.random.randn(6,3)
+np.dot(arr.T,arr)#计算内积
+arr=np.arange(16).reshape((2,2,4))
+arr
+arr.transpose((1,0,2))#对于高维数组，transpose需要得到一个有轴编号组成的元组才能对这些轴进行转置
+#https://www.cnblogs.com/sunshinewang/p/6893503.html
+#http://bbs.pinggu.org/thread-4565507-1-1.html
