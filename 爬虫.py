@@ -464,7 +464,15 @@ try:
 finally:
     csvfile.close()
 
+html=urlopen("https://en.wikipedia.org/wiki/Comparison_of_text_editors")
+bsObj=BeautifulSoup(html)
+bsObj.find("h1").get_text()
+bsObj.find("h1")
+
 #Mysql链接
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import pymysql
 conn=pymysql.connect(host='localhost',port=3306,user='root',passwd='S13227mcj',db='mysql')
 cur=conn.cursor()
@@ -474,5 +482,39 @@ print(cur.fetchone())
 cur.close()
 conn.close()
 
-
-
+from urllib import urlopen
+from bs4 import BeautifulSoup
+import re
+import datetime
+import random
+import pymysql
+conn=pymysql.connect(host="localhost",port=3306,user='root',passwd="S13227mcj",db="mysql")
+cur=conn.cursor()
+cur.execute("Use scraping")
+random.seed(datetime.datetime.now())
+def create(table):
+    cur.execute("CREATE TABLE %s (title varchar(100) primary key,content varchar(100));"%table)
+    cur.connection.commit()
+def store(title,content):
+    cur.execute("INSERT INTO pages(title,content) Values(\"%s\",\"%s\");"%(title,content))
+    cur.connection.commit()
+def getlinks(articleurl):
+    html=urlopen("https://en.wikipedia.org"+articleurl)
+    bsObj=BeautifulSoup(html)
+    title=bsObj.find("h1").get_text()
+    content=bsObj.find("div",{"id":"mw-content-text"}).find("p").get_text()
+    store(title,content)
+    return bsObj.find("div",{"id":"bodyContent"}).findAll("a",href=re.compile("^(/wiki/)((?!:).)*$"))
+create("pages")
+links=getlinks("/wiki/Kevin_Bacon")
+try:
+    while len(links)>0:
+        newArticle=links[random.randint(0,len(links)-1)].attrs["href"]
+        print(newArticle)
+        links=getlinks(newArticle)
+finally:
+    cur.close()
+    conn.close()
+html = urlopen("https://en.wikipedia.org/wiki/Kevin_Bacon")
+bsObj = BeautifulSoup(html)
+bsObj.find("div",{"id":"mw-content-text"}).find("p").get_text()
