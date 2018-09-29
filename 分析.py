@@ -81,5 +81,43 @@ arr3d[0]=old_values
 arr3d
 arr3d[1,0]
 np.array([7,8,9])
-
+arr[1:6]
+arr2d
+arr2d[:2]
+arr2d[:2,:1]
+arr2d[1,:2]
+arr2d[2,:1]
+arr2d[:,:1]
+arr2d[:2,1:]=0
+arr2d
+names=np.array(['Bob','Joe','Will','Bob','Joe','Will','Joe'])
+names
+import random
+data=np.random.randn(7,4)#numpy.random中的randn函数生成一些正态分布的随机数据
+data
+names=='Bob'
+np.array([True,False,False,True,False,False,False],dtype=bool)
+data[names=='Bob']
+data[names=='Bob',2:]
+data[names=='Bob',3]
+names!='Bob'
+data[-(names=="Bob")]#负号对条件进行否定
+mask=(names=='Bob')|(names=='Will')
+mask
+data[mask]
+data[data<0]=0
+data
+data[names!='Joe']=7
+data
+#花式索引
+arr=np.empty((8,4))
+for i in range(8):
+    arr[i]=i
+arr
+arr[[4,3,0,6]]
+arr[[-3,-5,-7]]#负数会从索引的末尾开始选取行
+arr=np.arange(32).reshape((8,4))
+arr[[1,5,7,2],[0,3,1,2]]#!!!类似于交点
+arr[[1,5,7,2]][:,[0,3,1,2]]#!!!类似于交集
+arr[np.ix_([1,5,7,2],[0,3,1,2])]#np.ix_()将两个以为整数数组转换为一个用于选取方形区域的索引器
 
