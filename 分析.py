@@ -127,6 +127,8 @@ arr=np.random.randn(6,3)
 np.dot(arr.T,arr)#计算内积
 arr=np.arange(16).reshape((2,2,4))
 arr
+#不会对数据进行修改
 arr.transpose((1,0,2))#对于高维数组，transpose需要得到一个有轴编号组成的元组才能对这些轴进行转置
 #https://www.cnblogs.com/sunshinewang/p/6893503.html
 #http://bbs.pinggu.org/thread-4565507-1-1.html
+arr.swapaxes(1,2)
