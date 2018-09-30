@@ -518,3 +518,59 @@ finally:
 html = urlopen("https://en.wikipedia.org/wiki/Kevin_Bacon")
 bsObj = BeautifulSoup(html)
 bsObj.find("div",{"id":"mw-content-text"}).find("p").get_text()
+
+from bs4 import BeautifulSoup
+import re
+import pymysql
+conn=pymysql.connect(host="localhost",port=3306,user='root',passwd='S13227mcj',db='mysql')
+cur=conn.cursor()
+cur.execute("Create database wikipedia;")
+cur.execute("USE wikipedia;")
+cur.execute("Create table pages (url varchar(100) primary key not null);")
+cur.execute("Create table links(frompageid int not null,tooageid int not null);")
+def insertpageifnotexists(url):
+    cur.execute("select * form pages where url=%s;",(url))
+    if cur.rowcount==0:
+        cur.execute("Insert into pages (url) value (%s)",(url))
+        conn.commit()
+        return cur.lastrowid
+    else:
+        cur.fetchone([0])
+def insertlink(frompageid,topageid):
+    cur.execute("select * from links where frompageid=%s and topageid=%s",(int(frompageid),int(topageid)))
+    if cur.rowcount==0:
+        cur.execute("Insert into links(from pageid,topageid) values (%s,$s)",(int(frompageid),int(topageid)))
+        conn.commit()
+pages=set()
+def getlinks(pageurl,recursionlevel):
+    global pages
+    if recursionlevel>4:
+        return;
+    pageid=insertpageifnotexists(pageurl)
+    html=urlopen("http://en.wikipedia.org"+pageurl)
+    bsObj=BeautifulSoup(html)
+    for link in bsObj.findAll("a",href=re.compile("^(/wiki/)((?!:).)*$")):
+        insertlink(pageid,insertpageifnotexists(link.attrs["href"]))
+        if link.attrs["href"] not in pages:
+            #遇到一个新页面，加入集合并搜索里面的词条链接
+            newpage=link.attr["href"]
+            pages.add(newpage)
+            getlinks(newpage,recursionlevel+1)
+getlinks("/wiki/Kevin_Bacon",0)
+cur.close()
+conn.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
