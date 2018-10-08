@@ -560,9 +560,76 @@ getlinks("/wiki/Kevin_Bacon",0)
 cur.close()
 conn.close()
 
+#用python发邮件,localhost的前提是本地已安装STMP客户端
+import smtplib
+from email.mine.text import MIMEText
+msg=MimeText("The body of the email is here")
+msg['Subject']="An Emain Alert"
+msg['From']="ryan@pythonscraping.com"
+msg['To']="wenmaster@pythonscraping.com"
+s=smtplib.SMTP('localhost')#如果要调整代码用于远程SMTP客户端，把localhost改为远程服务器地址
+s.send_message(msg)
+s.quit()
 
+import smtplib
+from email.mine.text  import MIMEText
+from bs4 import BeautifulSoup
+from urllib import urlopen
+import time
 
+def sendmail(subject,body):
+    msg=MIMEText(body)
+    msg['Subject']=subject
+    msg['From']="christmas_alerts@pythonscraping.com"
+    msg['To']="ryan@pythonscraping.com"
+s=smtplib.SMTP('localhost')
+s.send_message(msg)
+s.quit()
+bsObj=BeautifulSoup(urlopen("http://isitchristmas.com/"))
+while(bsObj.find("a",{"id":"answer"}).attr["title"]=="NO"):
+    print ("It is not christmas yet.")
+    time.sleep(3600)
+bsObj=BeautifulSoup(urlopen("https://isitchristmas.com/"))
+sendmail("It's christmas!","According to http://itischristmas.com,it is christmas！")
 
+#读取文档
+from urllib import urlretrieve
+from urllib import urlopen
+from bs4 import BeautifulSoup
+textPage=urlopen("http://www.pythonscraping.com/pages/warandpeace/chapter1.txt")
+textpages=BeautifulSoup(textPage)
+print(textPage.read())
+urlretrieve("http://www.pythonscraping.com/pages/warandpeace/chapter1.txt","text1.txt")
+
+from urllib import urlopen
+textPage=urlopen("http://pythonscraping.com/pages/warandpeace/chapter1-ru.txt")
+print(textPage.read())
+print(textPage.read(),'utf-8')#转换为utf-8格式
+#一般在处理HTML页面时，网站会在<head>半部分显示编码格式
+#<meta charset="utf-8">
+#<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=iso-8859-1">
+
+#读取csv文件，将csv文件储存在内存中，而非下载到本地
+from urllib import urlopen
+from io import  StringIO
+import csv
+data=urlopen("http://pythonscraping.com/files/MontyPythonAlbums.csv").read().decode('ascii','ignore')
+dataFile=StringIO(data)
+csvReader=csv.reader(dataFile)
+for row in csvReader:
+    print(row)
+for row in csvReader:
+    print("The album \""+row[0]+"\" was released in "+str(row[1]))
+
+from urllib import urlopen
+from io import StringIO
+import csv
+data=urlopen("http://pythonscraping.com/files/MontyPythonAlbums.csv").read().decode('ascii','ignore')
+datafile=StringIO(data)
+dictReader=csv.DictReader(datafile)
+print (dictReader.fieldnames)
+for row in dictReader:
+    print(row)
 
 
 
