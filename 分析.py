@@ -153,6 +153,42 @@ plt.imshow(z,cmap=plt.cm.gray)
 plt.colorbar()
 plt.title("image plot of $\sqrt{x^2+y^2}$ for a grid of values")
 
+xarr=np.array([1.1,1.2,1.3,1.4,1.5])
+yarr=np.array([2.1,2.2,2.3,2.4,2.5])
+cond=np.array([True,False,True,True,False])
+result=[(x if c else y) for x,y,c in zip(xarr,yarr,cond)]
+result
+#面临1、对大数组处理速度不够快 2、无法用于多维数组的问题
+result=np.where(cond,xarr,yarr)
+#where通常用于根据另一个数组而产生一个新的数组,第二第三个参数不必是数组，可以为标量值
+arr=np.random.randn(4,4)
+arr
+np.where(arr>0,2,-2)
+np.where(arr>0,2,arr)#只将正值设置为2
+result=[]
+for i in range(n):
+    if cond1[i] and cond2[i]:
+        result.append(0)
+    elif cond[i]:
+        result.append(1)
+    elif cond[i]:
+        result.append(2)
+    else:
+        result.append(3)
+np.where(cond1&cond2,0,np.where(cond1,1,np.where(cond2,2,3)))
+result=1*(cond1-cond2)+2*(cond2&-cond1)+3*-(cond1|cond2)
+arr=np.random.randn(5,4)#正态分布的数据
+arr.mean()
+np.mean(arr)
+arr.sum()
+arr.mean(axis=1)#axis用于计算该轴向上的统计量
+arr.sum(0)
+arr=np.array([[0,1,2],[3,4,5],[6,7,8]])
+arr.cumsum(0)#竖排累加
+arr.cumprod(1)#横排累积
+
+
+
 
 
 
